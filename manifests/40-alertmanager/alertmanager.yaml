@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: main
+  namespace: monitoring
+spec:
+  replicas: 1
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: monitoring-premium-retain
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi

@@ -1,0 +1,27 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: main
+  namespace: monitoring
+spec:
+  serviceAccountName: prometheus
+  replicas: 1
+  retention: 15d
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: monitoring-premium-retain
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
+  serviceMonitorSelector: {}
+  serviceMonitorNamespaceSelector: {}
+  ruleSelector: {}
+  ruleNamespaceSelector: {}
+  alerting:
+    alertmanagers:
+      - name: alertmanager-operated
+        namespace: monitoring
+        port: web
