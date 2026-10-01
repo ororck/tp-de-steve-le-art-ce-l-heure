@@ -1,0 +1,35 @@
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: prometheus-main-snap
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: tp-steve
+spec:
+  volumeSnapshotClassName: tp-steve-disk-retain
+  source:
+    persistentVolumeClaimName: prometheus-main-db-prometheus-main-0
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: alertmanager-main-snap
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: tp-steve
+spec:
+  volumeSnapshotClassName: tp-steve-disk-retain
+  source:
+    persistentVolumeClaimName: alertmanager-main-db-alertmanager-main-0
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: grafana-snap
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: tp-steve
+spec:
+  volumeSnapshotClassName: tp-steve-disk-retain
+  source:
+    persistentVolumeClaimName: grafana-pvc

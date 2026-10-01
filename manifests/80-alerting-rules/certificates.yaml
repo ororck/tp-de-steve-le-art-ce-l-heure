@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: tp-steve-certificates
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: tp-steve
+spec:
+  groups:
+    - name: certificates
+      rules:
+        - alert: CertificateNotReady
+          expr: certmanager_certificate_ready_status{condition="False"} == 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Certificat non ready"
+            description: "Le certificat {{ $labels.namespace }}/{{ $labels.name }} n'est pas ready."
+        - alert: CertificateExpiresIn30Days
+          expr: (certmanager_certificate_expiration_timestamp_seconds - time()) < 30 * 86400 and (certmanager_certificate_expiration_timestamp_seconds - time()) >= 7 * 86400
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Certificat expirant dans moins de 30 jours"
+            description: "Le certificat {{ $labels.namespace }}/{{ $labels.name }} expire dans moins de 30 jours."
+        - alert: CertificateExpiresIn7Days
+          expr: (certmanager_certificate_expiration_timestamp_seconds - time()) < 7 * 86400
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Certificat expirant dans moins de 7 jours"
+            description: "Le certificat {{ $labels.namespace }}/{{ $labels.name }} expire dans moins de 7 jours."
