@@ -9,3 +9,7 @@ vault-init.json
 .worker-out/
 .env*
 secrets/
+tfplan
+*.tfplan
+terraform/tfplan
+terraform/.terraform/
