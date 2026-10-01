@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-demo
+  namespace: monitoring
+spec:
+  secretName: vault-demo-tls
+  duration: 24h
+  renewBefore: 8h
+  dnsNames:
+    - steveleharceleur.francecentral.cloudapp.azure.com
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: vault-issuer
