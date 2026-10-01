@@ -1,0 +1,23 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    dashboards: "grafana"
+spec:
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: monitoring-premium-retain
+      resources:
+        requests:
+          storage: 10Gi
+  deployment:
+    spec:
+      strategy:
+        type: Recreate
+  config:
+    server:
+      root_url: https://steveleharceleur.francecentral.cloudapp.azure.com
