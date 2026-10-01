@@ -8,6 +8,11 @@ spec:
   serviceAccountName: prometheus
   replicas: 1
   retention: 15d
+  securityContext:
+    fsGroup: 2000
+    runAsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
   storage:
     volumeClaimTemplate:
       spec:
