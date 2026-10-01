@@ -1,0 +1,118 @@
+apiVersion: v1
+data:
+  nodes.json: |
+    {
+      "schemaVersion": 39,
+      "title": "Nodes",
+      "uid": "nodes",
+      "refresh": "30s",
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      },
+      "panels": [
+        {
+          "title": "CPU Usage (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "targets": [
+            {
+              "expr": "100 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100",
+              "legendFormat": "{{instance}}",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Memory Used",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "targets": [
+            {
+              "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+              "legendFormat": "{{instance}}",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Memory Available",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+          "targets": [
+            {
+              "expr": "node_memory_MemAvailable_bytes",
+              "legendFormat": "{{instance}}",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Filesystem Usage (%)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+          "targets": [
+            {
+              "expr": "100 - (node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay\"} * 100)",
+              "legendFormat": "{{instance}}",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Network Traffic",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+          "targets": [
+            {
+              "expr": "rate(node_network_receive_bytes_total{device!~\"lo|veth.*\"}[5m])",
+              "legendFormat": "{{instance}} - received",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            },
+            {
+              "expr": "rate(node_network_transmit_bytes_total{device!~\"lo|veth.*\"}[5m])",
+              "legendFormat": "{{instance}} - transmitted",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Load Average",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+          "targets": [
+            {
+              "expr": "node_load1",
+              "legendFormat": "{{instance}} 1m",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            },
+            {
+              "expr": "node_load5",
+              "legendFormat": "{{instance}} 5m",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            },
+            {
+              "expr": "node_load15",
+              "legendFormat": "{{instance}} 15m",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        },
+        {
+          "title": "Uptime",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+          "targets": [
+            {
+              "expr": "time() - node_boot_time_seconds",
+              "legendFormat": "{{instance}}",
+              "datasource": { "type": "prometheus", "uid": "Prometheus" }
+            }
+          ]
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  name: dashboard-nodes
+  namespace: monitoring
