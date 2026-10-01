@@ -24,7 +24,7 @@ variable "dns_label" {
 variable "node_vm_size" {
   description = "SKU des noeuds. Standard_D2s_v5 n'a aucun quota sur la souscription du TP"
   type        = string
-  default     = "Standard_D2s_v6"
+  default     = "Standard_D2s_v3"
 }
 
 variable "node_zones" {
