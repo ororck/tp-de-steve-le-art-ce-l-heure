@@ -10,3 +10,6 @@ vault-init.json
 .env*
 secrets/
 tfplan
+*.tfplan
+terraform/tfplan
+terraform/.terraform/
