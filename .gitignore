@@ -9,3 +9,4 @@ vault-init.json
 .worker-out/
 .env*
 secrets/
+tfplan
