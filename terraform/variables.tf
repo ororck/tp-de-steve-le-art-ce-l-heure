@@ -48,11 +48,11 @@ variable "resource_group_name" {
 variable "cluster_name" {
   description = "Nom du cluster AKS, prefixe pour le distinguer des autres TP du resource group"
   type        = string
-  default     = "tp-steve-aks"
+  default     = "tp-steve-aks-02"
 }
 
 variable "node_resource_group_name" {
   description = "Node resource group fixe pour eviter une collision avec un autre AKS du meme resource group"
   type        = string
-  default     = "MC-tp-steve-aks"
+  default     = "MC-tp-steve-aks-02"
 }
