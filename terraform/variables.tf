@@ -38,3 +38,21 @@ variable "node_count" {
   type        = number
   default     = 3
 }
+
+variable "resource_group_name" {
+  description = "Resource group existant, lu et jamais cree ni modifie par Terraform"
+  type        = string
+  default     = "msaidiRG"
+}
+
+variable "cluster_name" {
+  description = "Nom du cluster AKS, prefixe pour le distinguer des autres TP du resource group"
+  type        = string
+  default     = "tp-steve-aks"
+}
+
+variable "node_resource_group_name" {
+  description = "Node resource group fixe pour eviter une collision avec un autre AKS du meme resource group"
+  type        = string
+  default     = "MC-tp-steve-aks"
+}

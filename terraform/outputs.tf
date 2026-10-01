@@ -3,7 +3,7 @@ output "cluster_name" {
 }
 
 output "resource_group" {
-  value = azurerm_resource_group.main.name
+  value = data.azurerm_resource_group.main.name
 }
 
 output "node_resource_group" {

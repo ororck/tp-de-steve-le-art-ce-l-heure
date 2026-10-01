@@ -22,9 +22,8 @@ provider "azuread" {}
 
 data "azuread_client_config" "current" {}
 
-resource "azurerm_resource_group" "main" {
-  name     = "rg-${var.project}"
-  location = var.location
+data "azurerm_resource_group" "main" {
+  name = var.resource_group_name
 }
 
 resource "azuread_group" "admins" {
@@ -44,18 +43,19 @@ resource "azuread_group_member" "current_user_admin" {
 
 resource "azurerm_public_ip" "main" {
   name                = "${var.dns_label}-pip"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
   allocation_method   = "Static"
   sku                 = "Standard"
   domain_name_label   = var.dns_label
 }
 
 resource "azurerm_kubernetes_cluster" "main" {
-  name                = "aks-${var.project}"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-  dns_prefix          = var.dns_label
+  name                = var.cluster_name
+  resource_group_name = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
+  dns_prefix          = var.cluster_name
+  node_resource_group = var.node_resource_group_name
 
   role_based_access_control_enabled = true
   local_account_disabled            = false
@@ -99,7 +99,7 @@ resource "azurerm_role_assignment" "current_user_cluster_admin" {
 
 # Identite du control plane, pas kubelet. Sans elle le Service LoadBalancer reste en Pending
 resource "azurerm_role_assignment" "control_plane_network_contributor" {
-  scope                = azurerm_resource_group.main.id
+  scope                = data.azurerm_resource_group.main.id
   role_definition_name = "Network Contributor"
   principal_id         = azurerm_kubernetes_cluster.main.identity[0].principal_id
 }
