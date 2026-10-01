@@ -1,0 +1,11 @@
+.terraform/
+*.tfstate*
+terraform.tfvars
+.kube/
+kubeconfig*
+vault-init.json
+*.key
+*.pem
+.worker-out/
+.env*
+secrets/
